@@ -98,9 +98,23 @@ if __name__ == '__main__':
         print("-----------------------------")
         print("page " + str(pageNum) + ":", str(sizeX) + "x" + str(sizeY))
 
+        # check if landscape is more optimized
+        numPagesXlandscape = math.ceil((sizeX + 2*border)/ formatY)
+        numPagesYlandscape = math.ceil((sizeY + 2*border)/ formatX)
+        total_landscape = numPagesXlandscape * numPagesYlandscape
+
         # don't forget border size
-        numPagesX = int(math.ceil((sizeX + 2*border)/ formatX));
-        numPagesY = int(math.ceil((sizeY + 2*border)/ formatY));
+        numPagesX = math.ceil((sizeX + 2*border)/ formatX)
+        numPagesY = math.ceil((sizeY + 2*border)/ formatY)
+        total = numPagesX * numPagesY
+
+        if total > total_landscape:
+            print("Generating landscape tiles")
+            numPagesX = numPagesXlandscape
+            numPagesY = numPagesYlandscape
+            total = total_landscape
+            formatX, formatY = formatY, formatX
+
         print("X:", numPagesX, "pages")
         print("Y:", numPagesY, "pages")
         print("Total:", numPagesX * numPagesY, "pages")
@@ -135,7 +149,7 @@ if __name__ == '__main__':
                            "/scale 238pt = 84mm"
                 page_mark_offset = min_border/2
                 page_markX = baseX + border + page_mark_offset
-                page_markY = baseY + border - page_mark_offset 
+                page_markY = baseY + border - page_mark_offset
                 # page mark
                 can.drawString(page_markX, page_markY, page_str)
                 # scale line X
